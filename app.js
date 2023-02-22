@@ -350,24 +350,27 @@ app.post('/users',(req,res)=>{
     //User Sign up
     let body = req.body;
     let newUser = new User(body);
-
+    //console.log("Hello");
     newUser.save().then(()=>{
+        //console.log("Hello1");
         return newUser.createSession();
     }).then((refreshToken)=>{
         // Session created successfully - refreshToken returned
         // now we generate an access auth token for the user
-
+        //console.log("Hello2");
         return newUser.generateAccessAuthToken().then((accessToken)=>{
            //access auth token generated successfully, now we return an object containing the auth tokens
             return {accessToken, refreshToken}
         })
     }).then((authToken)=>{
+        //console.log("Hello3");
         // Now we construct and send the response to the user with their auth tokens in the header and the user object in the body
         res.
             header('x-refresh-token', authToken.refreshToken)
             .header('x-access-token', authToken.accessToken)
             .send(newUser);
     }).catch((e)=>{
+       // console.log("Hello4");
         res.status(400).send(e);
     })
 })
@@ -428,6 +431,6 @@ let deleteTasksFromList = (_listId) =>{
 
 
 app.listen(port,()=>{
-    console.log(port);
-    console.log('Server is listening');
+    //console.log(port);
+    console.log('Server is listening on port ' + port);
 })
